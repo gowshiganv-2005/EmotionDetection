@@ -9,8 +9,9 @@ import base64
 import io
 import random
 import numpy as np
+import os
 import cv2
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from tensorflow.keras.models import load_model
 from deepface import DeepFace
@@ -190,13 +191,13 @@ def get_songs(emotion: str, gender: str) -> list:
 
 
 # ─── API Endpoints ─────────────────────────────────────────────────────────────
-@app.route("/", methods=["GET"])
-def index():
-    return jsonify({
-        "message": "EmoTune Backend is Running!",
-        "ui_url": "http://localhost:5173",
-        "endpoints": ["/analyze (POST)", "/health (GET)"]
-    })
+@app.route("/", defaults={"path": ""})
+@app.route("/<path:path>")
+def serve(path):
+    if path != "" and os.path.exists(app.static_folder + "/" + path):
+        return send_from_directory(app.static_folder, path)
+    else:
+        return send_from_directory(app.static_folder, "index.html")
 
 @app.route("/analyze", methods=["POST"])
 def analyze():
