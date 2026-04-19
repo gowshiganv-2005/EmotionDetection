@@ -190,6 +190,14 @@ def get_songs(emotion: str, gender: str) -> list:
 
 
 # ─── API Endpoints ─────────────────────────────────────────────────────────────
+@app.route("/", methods=["GET"])
+def index():
+    return jsonify({
+        "message": "EmoTune Backend is Running!",
+        "ui_url": "http://localhost:5173",
+        "endpoints": ["/analyze (POST)", "/health (GET)"]
+    })
+
 @app.route("/analyze", methods=["POST"])
 def analyze():
     data = request.get_json(silent=True)
