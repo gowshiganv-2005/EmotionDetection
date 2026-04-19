@@ -11,9 +11,11 @@ build/
 venv/
 .venv/
 
-# Model / data (large binaries — track with Git LFS if needed)
-*.h5
-*.pt
+# Model files (needed for deployment)
+# *.h5
+# *.pt
+
+# data (large binaries — track with Git LFS if needed)
 dataset/
 
 # Node / React
